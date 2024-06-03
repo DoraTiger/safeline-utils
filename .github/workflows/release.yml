@@ -23,16 +23,3 @@ jobs:
           files: release/*
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-
-      - name: Install GitHub CLI
-        run: sudo apt-get install -y gh
-
-      - name: Update latest Release
-        run: |
-          latest_release=$(gh release view latest --json tagName --jq .tagName) || true
-          if [ -n "$latest_release" ]; then
-            gh release delete latest -y || true
-          fi
-          gh release create latest -t "Latest release" --target ${{ github.ref }} --notes "This is the latest release."
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
