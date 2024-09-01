@@ -224,6 +224,7 @@ func (h *SafelineHandler) UpdateCert(certPath *data.CertPath) (string, error) {
 	}
 
 	payload := map[string]interface{}{
+		"id": certPath.GetID(),
 		"manual": map[string]string{
 			"crt": certPath.GetCertStr(),
 			"key": certPath.GetKeyStr(),
