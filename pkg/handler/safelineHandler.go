@@ -221,22 +221,25 @@ func (h *SafelineHandler) UpdateCert(certPath *data.CertPath) (string, error) {
 	// Get UpdateCertResponse from Safeline
 	headers := map[string]string{
 		"authorization": "Bearer " + h.JWT,
+		"Content-Type": "application/json",  
 	}
 
 	payload := map[string]interface{}{
-		"id": certPath.GetID(),
 		"manual": map[string]string{
 			"crt": certPath.GetCertStr(),
 			"key": certPath.GetKeyStr(),
 		},
 		"type": 2,
+		"id": certPath.GetIDInt(),
 	}
 
 	body, _ := json.Marshal(payload)
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s%s/%s", h.account.GetSafelineURL(), cfg.SafelineConfig.API_Cert_Path, certPath.GetID()), bytes.NewBuffer(body))
+
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s%s", h.account.GetSafelineURL(), cfg.SafelineConfig.API_Cert_Path), bytes.NewBuffer(body))
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}
+	
 	resp, err := h.client.Do(req)
 	if err != nil {
 		file, line := utils.GetErrorLocation()
