@@ -3,6 +3,7 @@ package data
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 type CertPath struct {
@@ -21,6 +22,11 @@ func NewCertPath(id, certPath, keyPath string) *CertPath {
 
 func (c *CertPath) GetID() string {
 	return c.ID
+}
+
+func (c *CertPath) GetIDInt() int {
+	i, _ := strconv.Atoi(c.ID)
+    return i
 }
 
 func (c *CertPath) GetCertStr() string {
